@@ -149,14 +149,12 @@ fn impl_methods(machine: &Machine) -> syn::export::TokenStream {
                 StateMatchType::None => {}
                 StateMatchType::Wildcard => {
                     for state in variants_names.iter() {
-                        let entry = h.entry(state).or_insert(Vec::new());
-                        entry.push(&method.method);
+                        h.entry(state).or_insert_with(Vec::new).push(&method.method);
                     }
                 }
                 StateMatchType::Include(idents) => {
                     for state in idents.iter() {
-                        let entry = h.entry(state).or_insert(Vec::new());
-                        entry.push(&method.method);
+                        h.entry(state).or_insert_with(Vec::new).push(&method.method);
                     }
                 }
             }
