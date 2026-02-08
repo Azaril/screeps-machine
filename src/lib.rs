@@ -3,9 +3,9 @@ extern crate quote;
 extern crate syn;
 
 use case::CaseExt;
+use proc_macro2::Span;
 use quote::*;
 use std::collections::HashMap;
-use syn::export::Span;
 use syn::parse::{Parse, ParseStream, Result};
 use syn::spanned::*;
 use syn::*;
@@ -35,7 +35,7 @@ impl Parse for Machine {
 }
 
 #[proc_macro]
-pub fn machine(input: proc_macro::TokenStream) -> syn::export::TokenStream {
+pub fn machine(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let ast = parse_macro_input!(input as Machine);
 
     let mut stream = proc_macro::TokenStream::new();
@@ -49,7 +49,7 @@ pub fn machine(input: proc_macro::TokenStream) -> syn::export::TokenStream {
     stream
 }
 
-fn impl_machine(m: &Machine) -> syn::export::TokenStream {
+fn impl_machine(m: &Machine) -> proc_macro::TokenStream {
     let Machine { attributes, data, .. } = m;
     let ast = data;
 
@@ -136,7 +136,7 @@ fn impl_machine(m: &Machine) -> syn::export::TokenStream {
     stream
 }
 
-fn impl_methods(machine: &Machine) -> syn::export::TokenStream {
+fn impl_methods(machine: &Machine) -> proc_macro::TokenStream {
     let mut stream = proc_macro::TokenStream::new();
 
     let variants_names = machine.data.variants.iter().map(|v| v.ident.clone()).collect::<Vec<_>>();
